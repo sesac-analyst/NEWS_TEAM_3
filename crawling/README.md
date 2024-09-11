@@ -26,10 +26,9 @@ def cleansing_text(text):
     
     # 구두점, 따옴표, 기타 특수 문자 제거
     text = re.sub(r'[▲△▷▶▼▽◆◇■=#※ㆍ/·.,;:!?\'"‘’“”~∼&()→%․\[\]\-–]', '', text)
-    
     return text
     
-df['content'] = df['content'].apply(cleansing_text)
+    df['content'] = df['content'].apply(cleansing_text)
 ```python
 
 ```
