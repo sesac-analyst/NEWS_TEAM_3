@@ -36,7 +36,7 @@ df['content'] = df['content'].apply(cleansing_text)
 
 ```
 <br/>
-### 2. content
+## 2. content
 
 - 중복된 content 제거
 ```python
