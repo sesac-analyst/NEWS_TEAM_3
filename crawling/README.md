@@ -118,36 +118,4 @@ def save_to_csv(start_date, end_date, all_scraped_data):
 ```
 <br/>
 
-- 페이지 끝까지 스크롤하여 콘텐츠 로드
-```python
-def scroll_to_bottom(driver, pause_time=1):
-    last_height = driver.execute_script("return document.body.scrollHeight")
-
-    while True:
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(pause_time)
-        new_height = driver.execute_script("return document.body.scrollHeight")
-        
-        if new_height == last_height:
-            try:
-                more_button = WebDriverWait(driver, 3).until(
-                    EC.element_to_be_clickable((By.CSS_SELECTOR, "div > div.section_more > a"))
-                )
-                more_button.click()
-                time.sleep(pause_time)
-            except Exception as e:
-                print(f"더보기 버튼 클릭 오류: {e}")
-                break
-        
-        last_height = new_height
-```
-
-
-
-
-
-<
-
-<br/>
-<br/>
 
