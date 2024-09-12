@@ -5,26 +5,41 @@
 - []안의 내용 제거
 - [사진 영상 제보받습니다]포함 이후 문장 제거
 - 상기 과정을 거친 후 정규표현식을 활용하여 데이터 클렌징
-- 이름(3글자)만 추출
 - DATE의 데이터 통일
+- 기자 이름(3글자)만 추출
 
 <br/>
 
+- 날짜 컬럼 포맷 
+```python
+# 포맷 통일
+df['publication_date'] = df['publication_date'].astype(str)
+df['publication_date'] = df['publication_date'].str.replace('_', '.')
+df['publication_date'] = df['publication_date'].apply(lambda x: '.'.join(x.split('.')[:3]) if len(x.split('.')) > 2 else x)
+```
+<br/>
+
 #정규표현식 함수로 기본적인 문자/기호 제거
+def cleansing_text(text):
     
-    def cleansing_text(text):
     # 특수 기호 및 광고성 텍스트 제거
     text = re.sub(r'☞[^☞]*', '', text)
     
     # 구두점, 따옴표, 기타 특수 문자 제거
     text = re.sub(r'[▲△▷▶▼▽◆◇■=#※ㆍ/·.,;:!?\'"‘’“”~∼&()→%․\[\]\-–]', '', text)
+    
     return text
     
-    df['content'] = df['content'].apply(cleansing_text)
+df['content'] = df['content'].apply(cleansing_text)
+```python
 
+```
+<br/>
+<br/>
 
-- 중복된 컬럼 제거(content)
-
+### 2. content
+- 중복된 content 제거
+```python
 # content 중복 갯수 확인
 duplicated_contents = df[df.duplicated(subset=['content'], keep=False)]
 grouped = duplicated_contents.groupby('content').apply(lambda x: x.index.tolist()).reset_index(name='indices')
@@ -41,12 +56,6 @@ duplication_counts = df['content'].value_counts()
 duplicated_counts = duplication_counts[duplication_counts > 1]
 duplicated_counts
 
-- 날짜 컬럼 포맷 
-```python
-# 포맷 통일
-df['publication_date'] = df['publication_date'].astype(str)
-df['publication_date'] = df['publication_date'].str.replace('_', '.')
-df['publication_date'] = df['publication_date'].apply(lambda x: '.'.join(x.split('.')[:3]) if len(x.split('.')) > 2 else x)
-
 ``
+<br/>
 
