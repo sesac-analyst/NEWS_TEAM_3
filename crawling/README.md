@@ -32,9 +32,8 @@ Python 3.11
 - 사회 세부카테고리(subcategory):사건&사고/교육/미디어/성평등/인권/복지/노동/환경/전국
 <br/>
 
-- 크롤링 할 세부카테고리
+- 크롤링 할 세부카테고리와 이름 매핑
 ```python
-# 카테고리 코드와 이름 매핑
 category_mapping = {
     '259': '금융',
     '258': '증권',
@@ -45,6 +44,14 @@ category_mapping = {
     '310': '생활경제',
     '263': '경제일반'
 }
+```
+<br/>
+
+- URL에서 카테고리 코드를 추출하고, 카테고리 이름 반환
+```python
+def get_category_from_url(url):
+    category_id = url.split('/')[-1].split('?')[0]  
+    return category_mapping.get(category_id, '기타')  
 ```
 <br/>
 
