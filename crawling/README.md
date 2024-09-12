@@ -135,18 +135,28 @@ contents = " ".join([p.get_text(strip=True) for p in p_tags])
 ```
 <br/>
 
-- 
+- 페이지 끝까지 스크롤하여 콘텐츠 로드
 ```python
-with ThreadPoolExecutor(max_workers=10) as page_executor:
-        for date_range in date_ranges:
-            from_date = date_range[0].strftime('%Y%m%d')
-            to_date = date_range[1].strftime('%Y%m%d')
-            futures = [page_executor.submit(process_page, page_no, from_date, to_date, headers, directory) for page_no in range(1, 51)]
-            for future in as_completed(futures):
-                try:
-                    future.result()  # Raise exceptions if any occurred
-                except Exception as e:
-                    print(f"Error processing page: {e}")
+def scroll_to_bottom(driver, pause_time=1):
+    last_height = driver.execute_script("return document.body.scrollHeight")
+
+    while True:
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(pause_time)
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        
+        if new_height == last_height:
+            try:
+                more_button = WebDriverWait(driver, 3).until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, "div > div.section_more > a"))
+                )
+                more_button.click()
+                time.sleep(pause_time)
+            except Exception as e:
+                print(f"더보기 버튼 클릭 오류: {e}")
+                break
+        
+        last_height = new_height
 ```
 
 
