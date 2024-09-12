@@ -16,16 +16,19 @@ patterns = r'\현지시간|무단 전재 및 재배포 금지|이 기사는 프�
 df100['content'] = df100['content'].apply(lambda x: re.sub(patterns, '', x) if isinstance(x, str) else x)
 ```
 <br/>
+
 - 본문 내용이 20자 미만인 rows 제거
 ```python
 df['content'] = df['content'].apply(lambda x: '' if isinstance(x, str) and len(x.split()) < 20 else x)
 ```
 <br/>
+
 - 특정 문장(예:사진 영상 제보받습니다)포함 이후 문장 제거
 ```python
 f['content'] = df['content'].apply(lambda x: re.sub(r'\[사진 영상 제보받습니다.*\]|■ 제보하기.*', '', x) if isinstance(x, str) else x)
 ```
 <br/>
+
 - 날짜 컬럼 포맷 
 ```python
 # 포맷 통일
