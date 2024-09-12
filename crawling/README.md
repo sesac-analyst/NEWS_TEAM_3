@@ -11,8 +11,8 @@
 <br/>
 
 #정규표현식 함수로 기본적인 문자/기호 제거
-def cleansing_text(text):
     
+    def cleansing_text(text):
     # 특수 기호 및 광고성 텍스트 제거
     text = re.sub(r'☞[^☞]*', '', text)
     
@@ -49,5 +49,4 @@ df['publication_date'] = df['publication_date'].str.replace('_', '.')
 df['publication_date'] = df['publication_date'].apply(lambda x: '.'.join(x.split('.')[:3]) if len(x.split('.')) > 2 else x)
 
 ``
-<br/>
 
