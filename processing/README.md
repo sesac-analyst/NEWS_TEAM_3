@@ -23,7 +23,7 @@ df['content'] = df['content'].apply(lambda x: '' if isinstance(x, str) and len(x
 ```
 <br/>
 
-- 특정 문장(예:사진 영상 제보받습니다)포함 이후 문장 제거
+- 특정 문장(예:사진 영상 제보받습니다)포함 이후 모두 제거
 ```python
 f['content'] = df['content'].apply(lambda x: re.sub(r'\[사진 영상 제보받습니다.*\]|■ 제보하기.*', '', x) if isinstance(x, str) else x)
 ```
@@ -38,7 +38,7 @@ df['publication_date'] = df['publication_date'].apply(lambda x: '.'.join(x.split
 ```
 <br/>
 
-#정규표현식 함수로 기본적인 문자/기호 제거
+#정규표현식 함수로 특수문자/기호 제거
 ```python    
     def cleansing_text(text):
         text = re.sub(r'☞[^☞]*', '', text)
@@ -59,5 +59,4 @@ num_duplicated_contents = grouped.shape[0]
 # content 중복된 행 제거
 df.drop_duplicates(subset=['content'], keep='first')
 ``
-<br/>
 
