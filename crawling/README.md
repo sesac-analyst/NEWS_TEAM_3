@@ -21,10 +21,10 @@
     return text
     
     df['content'] = df['content'].apply(cleansing_text)
-```python
-<br/>
+
+
 - 중복된 컬럼 제거(content)
-```python
+
 # content 중복 갯수 확인
 duplicated_contents = df[df.duplicated(subset=['content'], keep=False)]
 grouped = duplicated_contents.groupby('content').apply(lambda x: x.index.tolist()).reset_index(name='indices')
