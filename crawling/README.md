@@ -91,6 +91,17 @@ elif soup_in.find('span', {"class": "byline_s"}):
 ```
 <br/>
 
+- 크롬 드라이버 설정 및 크롤링 실행
+```python
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--disable-gpu")
+driver = webdriver.Chrome(options=chrome_options)
+```
+<br/>
+
 - 페이지 끝까지 스크롤하여 콘텐츠 로드
 ```python
 def scroll_to_bottom(driver, pause_time=1):
