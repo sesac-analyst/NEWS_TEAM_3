@@ -5,17 +5,9 @@
 - []안의 내용 제거
 - [사진 영상 제보받습니다]포함 이후 문장 제거
 - 상기 과정을 거친 후 정규표현식을 활용하여 데이터 클렌징
+- 이름(3글자)만 추출
 - DATE의 데이터 통일
 
-<br/>
-
-- 날짜 컬럼 포맷 
-```python
-# 포맷 통일
-df['publication_date'] = df['publication_date'].astype(str)
-df['publication_date'] = df['publication_date'].str.replace('_', '.')
-df['publication_date'] = df['publication_date'].apply(lambda x: '.'.join(x.split('.')[:3]) if len(x.split('.')) > 2 else x)
-```
 <br/>
 
 #정규표현식 함수로 기본적인 문자/기호 제거
@@ -30,12 +22,7 @@ def cleansing_text(text):
     
     df['content'] = df['content'].apply(cleansing_text)
 ```python
-
-```
 <br/>
-<br/>
-
-### 2. content
 - 중복된 컬럼 제거(content)
 ```python
 # content 중복 갯수 확인
@@ -54,8 +41,12 @@ duplication_counts = df['content'].value_counts()
 duplicated_counts = duplication_counts[duplication_counts > 1]
 duplicated_counts
 
-# 기자 이름(3글자)만 추출
-df['author'] = df['author'].apply(lambda text: re.match(r'^[가-힣]{3}', str(text)).group(0) if re.match(r'^[가-힣]{3}', str(text)) else text)
+- 날짜 컬럼 포맷 
+```python
+# 포맷 통일
+df['publication_date'] = df['publication_date'].astype(str)
+df['publication_date'] = df['publication_date'].str.replace('_', '.')
+df['publication_date'] = df['publication_date'].apply(lambda x: '.'.join(x.split('.')[:3]) if len(x.split('.')) > 2 else x)
 
 ``
 <br/>
