@@ -81,6 +81,15 @@ content = soup_in.find('article', {"id": "dic_area"}).text if soup_in.find('arti
 ```
 <br/>
 
+- 작성자 추출
+```python
+author = '기자명 오류'
+if soup_in.find('em', {"class": "media_end_head_journalist_name"}):
+    author = soup_in.find('em', {"class": "media_end_head_journalist_name"}).text
+elif soup_in.find('span', {"class": "byline_s"}):
+    author = soup_in.find('span', {"class": "byline_s"}).text[:3] + " 기자"
+```
+<br/>
 - 페이지 끝까지 스크롤하여 콘텐츠 로드
 ```python
 def scroll_to_bottom(driver, pause_time=1):
