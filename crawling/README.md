@@ -82,78 +82,39 @@ content = soup_in.find('article', {"id": "dic_area"}).text if soup_in.find('arti
 ```
 <br/>
 
-- 본문내용 추출
+- 페이지 끝까지 스크롤하여 콘텐츠 로드
 ```python
-content = soup_in.find('article', {"id": "dic_area"}).text if soup_in.find('article', {"id": "dic_area"}) else '본문 오류'
+def scroll_to_bottom(driver, pause_time=1):
+    last_height = driver.execute_script("return document.body.scrollHeight")
+
+    while True:
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(pause_time)
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        
+        if new_height == last_height:
+            try:
+                more_button = WebDriverWait(driver, 3).until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, "div > div.section_more > a"))
+                )
+                more_button.click()
+                time.sleep(pause_time)
+            except Exception as e:
+                print(f"더보기 버튼 클릭 오류: {e}")
+                break
+        
+        last_height = new_height
 ```
+
 <br/>
 
-- 위
+- 수집한 데이터를 CSV 파일로 저장하는 함수
 ```python
-with ThreadPoolExecutor(max_workers=10) as executor:
-    executor.map(crawl_page, range(1, pages + 1))
-```
-
-
-<br/>
-
-- 날짜 
-
-<br/>
-
-- 
-```python
-def get_monthly_date_ranges(start_date, end_date):
-    date_ranges = []
-    current_start = start_date
-    while current_start < end_date:
-        current_end = min(current_start + relativedelta(months=1) - timedelta(days=1), end_date)
-        date_ranges.append((current_start, current_end))
-        current_start = current_end + timedelta(days=1)
-    return date_ranges
-```
-<br/>
-
-- 
-```python
-def fetch_url_with_retries(url, headers, retries=10, timeout=10):
-    for i in range(retries):
-        try:
-            # print(f"{datetime.now()} - Attempt {i+1} to fetch URL: {url}")
-            res = requests.get(url, headers=headers, timeout=timeout)
-            if res.status_code == 200:
-                return res
-            else:
-                print(f"Unexpected status code {res.status_code} for URL: {url}")
-        except requests.exceptions.RequestException as e:
-            print(f"{datetime.now()} - Request failed ({i+1}/{retries}): {e}")
-            sleep(2)
-    print(f"{datetime.now()} - Failed to retrieve JSON data from {url}")
-    return None
-```
-<br/>
-
-- 
-```python
-def clean_filename(filename):
-    filename = re.sub(r'[\/:*?"<>|.]', '_', filename)
-    filename = re.sub(r'_+', '_', filename)
-    return filename.strip('_')
-```
-<br/>
-
-- 
-```python
-news_title = crawling_soup.select_one('h1.tit').text.strip()
-
-news_date = crawling_soup.select_one('.txt-copyright > span.date').text.strip()[:10].replace("/", ".")
-
-# 모든 p 태그를 찾아 리스트로 저장
-p_tags = crawling_soup.find("article", class_="story-news").find_all('p')
-# 뒤에서 두 번째까지 제거한 후, 각 p 태그의 텍스트를 추출하여 하나의 문자열로 결합
-if len(p_tags) > 2:
-    p_tags = p_tags[:-1]
-contents = " ".join([p.get_text(strip=True) for p in p_tags])
+def save_to_csv(start_date, end_date, all_scraped_data):
+    """스크래핑한 데이터를 CSV 파일로 저장하는 함수"""
+    # 파일 이름 생성
+    file_name_articles = f"{start_date}-{end_date}_articles.csv"
+    file_name_comments = f"{start_date}-{end_date}_comments.csv"
 ```
 <br/>
 
