@@ -2,7 +2,7 @@
 
 ## 환경설정
 <aside>
-<b>수집할 기간</b>
+<b>수집 기간</b>
 <br/>
 2024.08.01 ~ 2024.08.31 (1개월)
 </aside>
@@ -90,6 +90,7 @@ elif soup_in.find('span', {"class": "byline_s"}):
     author = soup_in.find('span', {"class": "byline_s"}).text[:3] + " 기자"
 ```
 <br/>
+
 - 페이지 끝까지 스크롤하여 콘텐츠 로드
 ```python
 def scroll_to_bottom(driver, pause_time=1):
@@ -123,7 +124,4 @@ def save_to_csv(start_date, end_date, all_scraped_data):
     # 파일 이름 생성
     file_name_articles = f"{start_date}-{end_date}_articles.csv"
     file_name_comments = f"{start_date}-{end_date}_comments.csv"
-```
-<br/>
-
 
